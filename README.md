@@ -4,16 +4,16 @@
 Index:-
 1. Setup
 2. Task_1  
-..2.1 Task in serial
-..2.2 Task in parallel
-..2.3 Performance comparisons
-3. Task_2
-..3.1 Task in serial
-..3.2 Task in parallel
-4. Task_3
-..4.1 Task in serial
-..4.2 Task in parallel
-..4.3 Performance comparisons
+    2.1 Task in serial <br>
+    2.2 Task in parallel <br>
+    2.3 Performance comparisons <br>
+4. Task_2
+    3.1 Task in serial <br>
+    3.2 Task in parallel <br>
+5. Task_3
+    4.1 Task in serial <br>
+    4.2 Task in parallel <br>
+    4.3 Performance comparisons <br>
 ---
 ### 1. Setup
 Note: The code has been tested in windows 11 only. I am not sure if it'll run without any issues on linux.
@@ -63,23 +63,24 @@ For this case, i just rolled a random number 1-6 an arbritrarily large number of
 #### 4.2 Parallel implementation-
 After assigning a cache array to each block, each thread rolls a random number 3 times and saves its sum total to its index in the cache. Then I perform reduction on the cache to convert it into an array of size 1, and then finally I add the value of cache[0] across all the blocks using atomicAdd.
 The values I'm  getting from the simulation are a bit off from the actual probabilities. I do think my PRNG is working fine, as I used a different seed for the PRNG and I still got similar results. There might be some logical error in the code, but you can see from the next section that running it in parallel is much faster than running it in serial.
+While performance testing, I did encounter an error when the sample size is 2^30, however, I didnt have the time to fix it.
 #### 4.3 Performance comparision:-
 Number of dice = 1
 
-| Sample size | Serial time (ms) | Parallel net time (ms) |
+| Sample size | Serial time (ms) | Parallel simulation time (ms) |
 |---|---|---|
-|2^10|0.0618||
-|2^15|1.8051||
-|2^20|22.1784||
+|2^10|0.0618|6.0239|
+|2^15|1.8051|6.4478|
+|2^20|22.1784|6.7859|
 |2^25|726.391|51.1241|
-|2^30|21592| 5445.5|
+|2^30|21592|-|
 
 Number of dice = 3
 
-| Sample size | Serial time (ms) | Parallel net time (ms) |
+| Sample size | Serial time (ms) | Parallel simulation time (ms) |
 |---|---|---|
-|2^10|0.2017|21.4344|
-|2^15|1.9766|28.3716|
-|2^20|51.4456|382.267|
-|2^25|1897.94|4346.3|
-|2^30|Forever(t>1 minute)|5917.23|
+|2^10|0.2017|6.0266|
+|2^15|1.9766|6.384|
+|2^20|51.4456|5.9969|
+|2^25|1897.94|50.9596|
+|2^30|Forever(t>1 minute)|-|
