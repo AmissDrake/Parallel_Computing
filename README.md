@@ -34,10 +34,19 @@ Write a parallel program to find the sum of all the elements in a given array.
 #### 2.1. Serial implementation:-
 This task in serial is pretty simple. just take 2 arrays of the same size and initialize them to some value less than hundred, and add them.
 #### 2.2. Parallel implementation:-
-For the parallel version of this task, I initialized 3 arrays on the GPU, one empty and the other two having values equal to their index. Then i assigned each thread to adding the values at its index. The program runs fine, but due to the way I've defined the arrays, any array size over 2^16 gives a stack overflow error. I didnt know CPP when i wrote this task, and if i had to do it agian, id fix it, but i didnt have the time to go back and fix it. 
+For the parallel version of this task, I initialized 3 arrays on the GPU, one empty and the other two having values equal to their index. Then i assigned each thread to adding the values at its index. The program runs fine, but due to the way I've defined the arrays, any array size over 2^15 gives a stack overflow error. I didnt know CPP when i wrote this task, and if i had to do it agian, id fix it, but i didnt have the time to go back and fix it. 
 #### 2.3. Performance comparision:-
-For the values of array size like 2^16, the serial program is faster than the parallel one, because CUDA programs require copying the data to the gpu, and due to the relatively simple nature of the task, memory bandwidth, not computational speed, is the bottleneck here. Hence, for this task, i have included the values of time taken for the whole parallel program, and the time taken minus the memory allocation part.
+For the values of array size like 2^15, the serial program is faster than the parallel one, because CUDA programs require copying the data to the gpu, and due to the relatively simple nature of the task, memory bandwidth, not computational speed, is the bottleneck here. Hence, for this task, i have included the values of time taken for the whole parallel program, and the time taken minus the memory allocation part.
 
+| Array size | Serial time (ms) | Parallel net time (ms) | Parallel time without bandwidth bottleneck (ms) |
+|---|---|---|---|
+|2^1|0.004300|1609.94|0.5857|
+|2^3|0.002200|1029.4|0.5421|
+|2^7|0.007600|155.454|0.5416|
+|2^11|0.160900|1621.57|0.6242|
+|2^15|1.627700|1709.51|0.659|
+
+You can see how the parallel compute starts being faster at 2^15. Unfortunately my program crashes for values more than that, but for huge values like 2^25 or so, even the parallel net time would be shorter than the serial time.
 
 ### 3. Task_2
 Given a graph, write a parallel program to find the number of connected components in the graph, and find which component a given vertex belongs to.
@@ -50,3 +59,5 @@ For the parallel case, implementation would require feeding in each row of the a
 ### 4. Task_3
 Write a parallel program to run a monte carlo simulation to find the probability of getting the total 3n when n 6-sided dice are rolled simultaneously. Make sure that your PRNG is working as expected in the parallel algorithm.
 #### 4.1 Serial implementation-
+For this case, i just rolled a random number 1-6 an arbritrarily large number of times, and then counted up the number of times you get 3*N. Once I have that, I divided it by the total number of runs to get the chance of getting that sum.
+#### 4.2 Parallel implementation-
