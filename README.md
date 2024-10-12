@@ -61,3 +61,25 @@ Write a parallel program to run a monte carlo simulation to find the probability
 #### 4.1 Serial implementation-
 For this case, i just rolled a random number 1-6 an arbritrarily large number of times, and then counted up the number of times you get 3*N. Once I have that, I divided it by the total number of runs to get the chance of getting that sum.
 #### 4.2 Parallel implementation-
+After assigning a cache array to each block, each thread rolls a random number 3 times and saves its sum total to its index in the cache. Then I perform reduction on the cache to convert it into an array of size 1, and then finally I add the value of cache[0] across all the blocks using atomicAdd.
+The values I'm  getting from the simulation are a bit off from the actual probabilities. I do think my PRNG is working fine, as I used a different seed for the PRNG and I still got similar results. There might be some logical error in the code, but you can see from the next section that running it in parallel is much faster than running it in serial.
+#### 4.3 Performance comparision:-
+Number of dice = 1
+
+| Sample size | Serial time (ms) | Parallel net time (ms) |
+|---|---|---|
+|2^10|0.0618||
+|2^15|1.8051||
+|2^20|22.1784||
+|2^25|726.391|51.1241|
+|2^30|21592| 5445.5|
+
+Number of dice = 3
+
+| Sample size | Serial time (ms) | Parallel net time (ms) |
+|---|---|---|
+|2^10|0.2017|21.4344|
+|2^15|1.9766|28.3716|
+|2^20|51.4456|382.267|
+|2^25|1897.94|4346.3|
+|2^30|Forever(t>1 minute)|5917.23|
