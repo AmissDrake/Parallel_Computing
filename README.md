@@ -7,10 +7,10 @@ Index:-
     2.1 Task in serial <br>
     2.2 Task in parallel <br>
     2.3 Performance comparisons <br>
-4. Task_2
+4. Task_2 <br>
     3.1 Task in serial <br>
     3.2 Task in parallel <br>
-5. Task_3
+5. Task_3 <br>
     4.1 Task in serial <br>
     4.2 Task in parallel <br>
     4.3 Performance comparisons <br>
